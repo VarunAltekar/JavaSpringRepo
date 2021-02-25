@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="http://www.padual.com/java/logback.xsd">
+
+	<!-- 
+	
+		The available logging levels in Logback are:
+
+			OFF (output no logs)
+			ERROR
+			WARN
+			INFO
+			DEBUG
+s			TRACE
+	
+	 -->
+
+
+	<!-- 1. Console Appender-->
+	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+            <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} %magenta([%thread]) %highlight(%-5level) %logger{36}.%M - %msg%n</pattern>
+        </encoder>
+	</appender>	
+	
+	<!-- 4. Package level Logger -->
+	<!-- <logger name="com.example.logbackdemo" additivity="false" level="trace">
+    	<appender-ref ref="stdout" />
+	</logger> -->
+
+	<!-- 5. properties -->
+	<property name="log_path" value="logs"></property>
+	
+	<!-- 6. File Appender -->
+	<appender name="file_appender" class="ch.qos.logback.core.FileAppender">
+		<file>${log_path}/logFile.log</file>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+        	<Pattern>
+            %d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36}.%M - %msg%n
+        	</Pattern>
+    	</encoder>
+	</appender>
+	
+	<!-- 3. Class level Logger (Highest level)-->
+	<!-- <logger name="com.example.logbackdemo.MyServiceImpl" level="debug" additivity="false">
+		<appender-ref ref="file_appender" />
+	</logger> -->
+	
+	<!-- 7. for dev profile stdout & file appender -->
+	<springProfile name="dev">
+		<!-- 2. Root Logger-->
+		<root level="info">
+			<appender-ref ref="stdout" />
+			<appender-ref ref="file_appender" />
+		</root>
+	
+		<!-- 4. Package level Logger -->
+		<logger name="com.http.demo" level="debug" additivity="false">
+			<appender-ref ref="stdout" />
+			<appender-ref ref="file_appender" />
+		</logger>
+	</springProfile>
+	
+	<!-- 8. for prod profile file appender -->
+	<springProfile name="prod">
+		<!-- 2. Root Logger-->
+		<root level="info">
+			<appender-ref ref="file_appender" />
+		</root>
+	
+		<!-- 4. Package level Logger-->
+		<logger name="com.http.demo" level="debug" additivity="false">
+			<appender-ref ref="file_appender" />
+		</logger>
+	</springProfile>
+	
+</configuration>
