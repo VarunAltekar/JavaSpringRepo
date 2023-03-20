@@ -52,6 +52,7 @@ public class HttpStatusCodeApplicationTests {
 	@Autowired
 	MockMvc mockMvc;
 	
+	@SuppressWarnings("rawtypes")
 	private HttpMessageConverter mappingJackson2HttpMessageConverter;
 	
 	@Test
